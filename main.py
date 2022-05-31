@@ -1,10 +1,12 @@
 from reddit.read import Reader
+from twitter.write import Writer
 from config import Config
 
 
 def main():
-    posts = Reader(Config().read('REDDIT'), "memes").read()
-    print("Submitting post to instagram: ", posts[1])
+    config = Config()
+    posts = Reader(config.read('REDDIT'), "memes").read()
+    Writer(config.read('TWITTER')).write()
     pass
 
 
