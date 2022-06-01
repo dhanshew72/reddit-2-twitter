@@ -4,15 +4,17 @@ import tweepy
 class Writer:
 
     def __init__(self, credentials):
-        self.wrapper = tweepy.API(tweepy.OAuth2BearerHandler(credentials['bearer_token']))
-        pass
+        auth = tweepy.OAuthHandler(credentials['api_key'], credentials['api_key_secret'])
+        auth.set_access_token(credentials['access_token'], credentials['access_token_secret'])
+        self.wrapper = tweepy.API(auth)
+        self.caption = "Follow @boredcovidsurv1 (this page) for more memes #memes #dailymemes #funny #funny #memes #memepage" # noqa
 
-    def batch_write(self):
-        pass
+    def batch(self, files):
+        for file in files:
+            try:
+                self.write(file)
+            except Exception as ex:
+                print('Error uploading to twitter: ', ex)
 
-    def write(self):
-        pass
-
-    def _upload_image(self):
-        self.wrapper.media_upload('')
-        pass
+    def write(self, file):
+        self.wrapper.update_status_with_media(self.caption, file)
